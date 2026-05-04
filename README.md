@@ -1,5 +1,16 @@
+# Springboot Modular Redis
 
-#Redis via Docker
+## Docker
+
+	docker build -t springboot-modular-redis .
+	
+	docker run --rm -p 8080:8080 --name springboot-modular-redis springboot-modular-redis
+	
+	docker-compose up --build
+	
+	docker-compose down --volumes
+
+## Redis via Docker
 
 Se você já tem o Docker instalado, basta rodar o seguinte comando no terminal:
 
@@ -30,7 +41,7 @@ No arquivo application.properties do seu projeto Spring Boot, configure a conex�
 	spring.redis.port=6379
 	spring.redis.password= # Deixe vazio, pois não há senha por padrão
 
-#Testando 1 via Postman ou Browser
+## Testando 1 via Postman ou Browser
 
 Este procedimento aciona o module-application
 
@@ -40,13 +51,13 @@ Este procedimento aciona o module-application
 
 	DELETE localhost:8080/redis/delete?key=nome
 
-#Parando o Redis no Docker
+## Parando o Redis no Docker
 
 	docker stop redis
 
 	docker rm redis
 
-#Testando 2 via Postman ou Browser
+## Testando 2 via Postman ou Browser
 
 Apos Teste 1 via module-application, vamos fazer o Teste 2 que aciona o module-service e module-web
 
@@ -55,3 +66,16 @@ Apos Teste 1 via module-application, vamos fazer o Teste 2 que aciona o module-s
 	POST localhost:8080/api/products/redis/set?key=nome&value=Maria
 
 Nosso exemplo sobrescreve o valor e estamos alternando "nome" entre "Joao" e "Maria"
+
+## Importante
+
+Spring 2.x usava variaveis de configuração
+    
+    spring.redis.host=redis
+    spring.redis.port=6379
+
+Spring 3.x passou a usar de outra forma, abaixo de "data", assim como outros pacotes como Mongo, Cassandra, varios foram movidos para "data"
+
+    spring.data.redis.host=redis
+    spring.data.redis.port=6379
+

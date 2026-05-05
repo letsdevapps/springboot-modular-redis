@@ -1,5 +1,7 @@
 package com.pro.controller;
 
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,9 @@ import com.pro.service.RedisService;
 @RestController
 @RequestMapping("/redis")
 public class RedisController {
+
+  @Autowired
+  private RedisConnectionFactory connectionFactory;
 
 	@Autowired
 	private RedisService redisService;
@@ -33,4 +38,13 @@ public class RedisController {
 		redisService.delete(key);
 		return "Valor deletado do Redis!";
 	}
+	
+	@GetMapping("/redis-status")
+  public boolean isRedisUp() {
+      try (RedisConnection connection = connectionFactory.getConnection()) {
+          return "PONG".equals(connection.ping());
+      } catch (Exception e) {
+          return false;
+      }
+  }
 }
